@@ -8,20 +8,26 @@
         </p>
     </div>
     </header>
-    <div class="row text-center" style="display:flex;flex-wrap:wrap;">
+    <div class="container">
+        <div class="row text-center" style="display:flex;flex-wrap:wrap;">
         
-        <% campgrounds.forEach((campground)=>{ %>
-            <div class="col-md-6 col-sm-4">
+            <% campgrounds.forEach((campground)=>{ %>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-12">
 
-                <div class="thumbnail">
-                    <img src="<%= campground.image %>" alt="#"/>
-                    <div class="caption">
-                        <h3><%= campground.name %> </h3>
+                    <div class="card" style="width: 350px;">
+                        <img src="<%= campground.image %>" alt="#" class="card-img" height="320px"/>
+                        <div class="card-body">
+                            <h3 class="card-title text-center" style="color: blueviolet;"><%= campground.name %> </h3>
+                            <p class="card-text text-center"><%= campground.desc %> </p>
+                            <a href="/campground/<%= campground._id %> " class="btn btn-primary">View details</a>
+                        </div>
+                    
                     </div>
-                    <p><a href="/campground/<%= campground._id %> " class="btn btn-primary">More Info...!!</a></p>
                 </div>
-            </div>
-        <% }); %> 
+                <br>
+                <br>
+            <% }); %> 
+        </div>
     </div>
 
     

@@ -2,10 +2,10 @@ const express= require("express"),
   app=express(),
   bodyparser=require("body-parser"),
   mongoose=require("mongoose");
+  campground=require("./models/campground");
  mongoose.connect("mongodb://localhost/yelp_camp",{useNewUrlParser: true, useUnifiedTopology: true});
 app.use(bodyparser.urlencoded({extended:true}));
 
-const campground=mongoose.model('campground',{name:String,image:String,desc:String});
 
 //const campOne=new  campground({name:'GraniteHill',image:'https://images.unsplash.com/photo-1533632359083-0185df1be85d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',desc:'This is  a new campground.'});
 //campOne.save().then(()=>console.log(campOne));

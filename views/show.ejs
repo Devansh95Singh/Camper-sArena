@@ -1,5 +1,16 @@
+<%- include('partials/header') %> 
+
+
 <h1>This is the addition page</h1>
 
 <p><%= campground.name%></p>
 <img src="<%= campground.image %>" />
 <p><%= campground.desc%></p>
+<a class="btn btn-primary" href="/campground/<%= campground._id %>/comment/new">Add a new comment</a>
+
+<% campground.comments.forEach((comment)=>{ %>
+    <p><b><%= comment.author %>--<%= comment.text %>  </b></p>
+
+<% }) %> 
+
+<%- include('partials/footer') %> 

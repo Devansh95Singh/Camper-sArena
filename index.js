@@ -1,10 +1,14 @@
 const express= require("express"),
   app=express(),
   bodyparser=require("body-parser"),
-  mongoose=require("mongoose");
-  campground=require("./models/campground");
+  mongoose=require("mongoose"),
+  campground=require("./models/campground"),
+  comment=require("./models/comment"),
+  seeddb=require("./seed");
+
+  seeddb();
  mongoose.connect("mongodb://localhost/yelp_camp",{useNewUrlParser: true, useUnifiedTopology: true});
-app.use(bodyparser.urlencoded({extended:true}));
+ app.use(bodyparser.urlencoded({extended:true}));
 
 
 //const campOne=new  campground({name:'GraniteHill',image:'https://images.unsplash.com/photo-1533632359083-0185df1be85d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',desc:'This is  a new campground.'});
@@ -65,15 +69,52 @@ app.get("/campground/new",(req,res)=>{
     res.render("newCamp");
 })
 app.get("/campground/:id",(req,res)=>{
-    campground.findById(req.params.id,(err,foundCampground)=>{
+    campground.findById(req.params.id).populate("comments").exec((err,foundCampground)=>{
         if(err){
             console.log(err);
         }else{
+            console.log(foundCampground);
             res.render("show",{campground:foundCampground});
         }
 
     });
 })
+
+app.get("/campground/:id/comment/new",(req,res)=>{
+    campground.findById(req.params.id,(err,campground)=>{
+        if(err)
+        {
+            console.log(err);
+        }else{
+            res.render("newcomment",{campground:campground});
+
+        }
+    });
+    
+
+});
+app.post("/campground/:id/comment",(req,res)=>{
+    campground.findById(req.params.id, (err,campground)=>{
+        if(err)
+        {
+            console.log(err);
+        }else{
+            comment.create(req.body.comment ,(err,comment)=>{
+                if(err)
+                {
+                    console.log(err);
+                }else{
+                    campground.comments.push(comment);
+                    campground.save();
+                    res.redirect('/campground/'+campground._id);
+                }
+
+            });
+        }
+
+    });
+
+});
 
 
  app.listen(3000);

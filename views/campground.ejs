@@ -8,13 +8,13 @@
         </p>
     </div>
     </header>
-    <div class="container">
+    <div class="container-fluid">
         <div class="row text-center" style="display:flex;flex-wrap:wrap;">
         
             <% campgrounds.forEach((campground)=>{ %>
-                <div class="col-lg-4 col-md-4 col-sm-4 col-12">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-12" style="margin-top: 2rem;">
 
-                    <div class="card" style="width: 350px;">
+                    <div class="card" style="width: 450px;box-shadow:20px 20px 50px grey;">
                         <img src="<%= campground.image %>" alt="#" class="card-img" height="320px"/>
                         <div class="card-body">
                             <h3 class="card-title text-center" style="color: blueviolet;"><%= campground.name %> </h3>
@@ -24,8 +24,7 @@
                     
                     </div>
                 </div>
-                <br>
-                <br>
+                
             <% }); %> 
         </div>
     </div>

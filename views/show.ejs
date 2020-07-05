@@ -1,16 +1,53 @@
 <%- include('partials/header') %> 
+<div class="container" style="margin-top: 2em;">
+    <div class="row">
+        <div class="col-md-3">
+            <p class="label">CAMPER'S ARENA</p>
+            <div class="list-group">
+                <li class="list-group-item active">Information</li>
+                <li class="list-group-item">About Us</li>
+                <li class="list-group-item">Contact Us</li>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="card" style="width: 950px;box-shadow:20px 20px 50px grey;">
+                <img src="<%= campground.image %>" alt="#" class="card-img" height="520px"/>
+                <div class="card-body">
+                    <h4 style="text-align: end;">$9.00/night</h4>
+                    <h3 class="card-title text-center" style="color: blueviolet;"><a href="#"><%= campground.name %></a> </h3>
+                    <p class="card-text text-center"><%= campground.desc %> </p>
+                    
+                    
+                </div>
+            
+            </div>
+            <div class="jumbotron" style="margin-top: 2em;box-shadow:20px 20px 50px grey;">
+                <div class="text-right">
+                <a class="btn btn-danger" href="/campground/<%= campground._id %>/comment/new">Add a  Review</a>
+                </div>
+                <hr>
+                    
+                        <% campground.comments.forEach((comment)=>{ %>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <b><%= comment.author %> </b>
+                                    <div style="float: right;">------10 day's ago---------</div>
+                                    <p>
+                                        <%= comment.text %>
+                                    </p>
+                                </div>
+                            </div>
+                            
+                        
+                        <% }); %> 
+
+                    
+                
+                
+            
+            </div>
+        </div>
+    </div>
+</div>
 
 
-<h1>This is the addition page</h1>
-
-<p><%= campground.name%></p>
-<img src="<%= campground.image %>" />
-<p><%= campground.desc%></p>
-<a class="btn btn-primary" href="/campground/<%= campground._id %>/comment/new">Add a new comment</a>
-
-<% campground.comments.forEach((comment)=>{ %>
-    <p><b><%= comment.author %>--<%= comment.text %>  </b></p>
-
-<% }) %> 
-
-<%- include('partials/footer') %> 

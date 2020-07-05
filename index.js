@@ -1,10 +1,14 @@
 const express= require("express"),
-  app=express(),
-  bodyparser=require("body-parser"),
-  mongoose=require("mongoose"),
-  campground=require("./models/campground"),
-  comment=require("./models/comment"),
-  seeddb=require("./seed");
+          app=express(),
+          bodyparser=require("body-parser"),
+          mongoose=require("mongoose"),
+          passport=require("passport"),
+          localStrategy =require("passport-local"),
+          passportLocalMongoose=require("passport-local-mongoose"),
+          User=require("./models/user"),
+          campground=require("./models/campground"),
+          comment=require("./models/comment"),
+          seeddb=require("./seed");
 
   seeddb();
  mongoose.connect("mongodb://localhost/yelp_camp",{useNewUrlParser: true, useUnifiedTopology: true});
@@ -13,20 +17,18 @@ const express= require("express"),
 
 //const campOne=new  campground({name:'GraniteHill',image:'https://images.unsplash.com/photo-1533632359083-0185df1be85d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',desc:'This is  a new campground.'});
 //campOne.save().then(()=>console.log(campOne));
+app.use(require("express-session")({
+    secret:"hello everyone!!",
+    resave:false,
+    saveUninitialized:false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+passport.use(new localStrategy(User.authenticate()));
 
  app.set("view engine","ejs");
- //const campgrounds=[
-    //{name:"Mountain Rainer",image:"https://images.unsplash.com/photo-1590122401646-5534a84afa13?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"},
-    //{name:"Wisconsin",image:"https://images.unsplash.com/photo-1590122401646-5534a84afa13?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"},
-    //{name:"Wisconsin",image:"https://images.unsplash.com/photo-1556942154-006c061d4561?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"},
-    //{name:"Shimla",image:"https://images.unsplash.com/photo-1565053396207-75ca17bdf99c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"},
-    //{name:"Mountain Rainer",image:"https://images.unsplash.com/photo-1545313841-926bbf0fa7d9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"},
-    //{name:"Wisconsin",image:"https://images.unsplash.com/photo-1545313841-926bbf0fa7d9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"},
-    //{name:"Shimla",image:"https://images.unsplash.com/photo-1477581265664-b1e27c6731a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"},
-    //{name:"Mountain Rainer",image:"https://images.unsplash.com/photo-1477581265664-b1e27c6731a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"},
-    //{name:"Wisconsin",image:"https://images.unsplash.com/photo-1527931548997-178c464df936?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"},
-    //{name:"Shimla",image:"https://images.unsplash.com/photo-1512862413804-7d90a3069054?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"}
-//];
 
  app.get("/",(req,res)=>{
      res.render("landing");
@@ -93,6 +95,7 @@ app.get("/campground/:id/comment/new",(req,res)=>{
     
 
 });
+
 app.post("/campground/:id/comment",(req,res)=>{
     campground.findById(req.params.id, (err,campground)=>{
         if(err)
@@ -115,7 +118,26 @@ app.post("/campground/:id/comment",(req,res)=>{
     });
 
 });
-
-
+app.get("/register",(req,res)=>{
+    res.render("register");
+});
+app.post("/register",(req,res)=>{
+    req.body.username;
+    req.body.password;
+    User.register(new User({username:req.body.username}),req.body.password,(err,user)=>{
+        if(err)
+        {
+            console.log(err);
+            return res.render("register");
+        }else{
+            passport.authenticate("local")(req,res,()=>{
+                res.redirect("/campground");
+            });
+        }
+    });
+});
+app.get("/login",(req,res)=>{
+    res.render("login");
+})
  app.listen(3000);
  console.log("Server has Started");

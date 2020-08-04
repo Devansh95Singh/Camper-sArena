@@ -1,1 +1,53 @@
-<h1>Login</h1>
+<%- include('partials/header') %>
+<div class="back">
+    <div class="form-box">
+        <div class="button-box">
+            <div id="btn"></div>
+            <button type="button" class="toggle-btn" onclick="login()" >Login</button>
+            <button type="button" class="toggle-btn" onclick="signup()" >Sign-Up</button>
+        </div>
+        <div class="social-icons">
+            <a href="#" class="fa fa-facebook"></a>
+            <a href="#" class="fa fa-twitter"></a>
+            <a href="#" class="fa fa-google"></a>
+            <a href="#" class="fa fa-linkedin"></a>
+        </div>
+        <form action="/login" method="POST" class="input-group" id="login">
+            <input type="text" name="username" placeholder="Enter your Username" class="input-field">
+            
+            <input type="password" name="password" placeholder="Enter your password" class="input-field">
+            
+            <button class="btn-log">LOG-IN</button>
+
+
+        </form>
+        <form action="/signup" method="POST" class="input-group" id="register">
+            <input type="text" name="username" placeholder="Enter your Username" class="input-field">
+            
+            <input type="password" name="password" placeholder="Enter your password" class="input-field">
+            
+            <button class="btn-log">SIGN-UP</button>
+
+
+        </form>
+    </div>
+<script>
+    const x=document.getElementById("login");
+    const y=document.getElementById("register");
+    const z=document.getElementById("btn");
+
+    function login()
+    {
+        x.style.left="-500px";
+        y.style.left="5px";
+        z.style.left="110px";
+    }
+    function signup()
+    {
+        x.style.left="5px";
+        y.style.left="480px";
+        z.style.left="0px";
+    }
+</script>
+</div>
+

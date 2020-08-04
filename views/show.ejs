@@ -16,6 +16,10 @@
                     <h4 style="text-align: end;">$9.00/night</h4>
                     <h3 class="card-title text-center" style="color: blueviolet;"><a href="#"><%= campground.name %></a> </h3>
                     <p class="card-text text-center"><%= campground.desc %> </p>
+                    <a href="/campground/<%= campground._id %>/edit" class="btn btn-primary danger">Edit</a>
+                    <form action="/campground/<%= campground._id %>?_method=DELETE" method="POST">
+                        <button class="btn btn-primary">Delete</button>
+                    </form>
                     
                     
                 </div>
@@ -30,8 +34,8 @@
                         <% campground.comments.forEach((comment)=>{ %>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <b><%= comment.author %> </b>
-                                    <div style="float: right;">------10 day's ago---------</div>
+                                    <b><%= comment.author.username %> </b>
+                                    <div style="float: right;">------<%= comment.createdAt %> ---------</div>
                                     <p>
                                         <%= comment.text %>
                                     </p>

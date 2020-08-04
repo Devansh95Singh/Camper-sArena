@@ -50,7 +50,7 @@ function seeddb(){
                  }
              });
          });
-     }); 
+        }); 
      //add a few comments
  }
 module.exports=seeddb;
